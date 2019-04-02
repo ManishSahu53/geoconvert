@@ -5,14 +5,18 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="geoConvert",
-    version="0.0.1",
+    version="0.1.0",
     author="Manish Sahu",
     author_email="manish@indshine.com",
     description="A small geospatial dataset converter package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
-    packages=setuptools.find_packages(),
+    url="https://gitlab.com/manish.indshine/geoconvert.git",
+    install_requires=[
+          'geopandas',
+          'fiona',
+          'shapely'
+      ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
