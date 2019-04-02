@@ -1,8 +1,0 @@
-README.md
-setup.py
-geoConvert.egg-info/PKG-INFO
-geoConvert.egg-info/SOURCES.txt
-geoConvert.egg-info/dependency_links.txt
-geoConvert.egg-info/requires.txt
-geoConvert.egg-info/top_level.txt
-src/geoConvert.py
