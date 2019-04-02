@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: geoConvert
+Version: 0.1.0
+Summary: A small geospatial dataset converter package
+Home-page: https://gitlab.com/manish.indshine/geoconvert.git
+Author: Manish Sahu
+Author-email: manish@indshine.com
+License: UNKNOWN
+Description: # geoConvert
+        ## Introduction
+        It is used to convert vector files like Shp, KML, GeoJson to one another
+        
+Keywords: geospatial,converter,vector
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: GIS
+Description-Content-Type: text/markdown

@@ -1,1 +1,1 @@
-name = "geoConvert.py"
+name = "src/geoconvert.py"
