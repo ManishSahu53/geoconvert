@@ -42,7 +42,7 @@ class vector():
 
         self.extention = os.path.splitext(self.path_input)[1][1:].upper()
 
-    def towgs(self, epsg=4236, path_towgs=None):
+    def towgs(self, path_towgs=None):
         """
         Converts data to WGS coordinate system
         """
@@ -51,7 +51,7 @@ class vector():
         driver = self.check_driver()
 
         try:
-            world = self.df.to_crs({'init': 'epsg:%d' % (epsg)})
+            world = self.df.to_crs({'init': 'epsg:4326'})
         except Exception as e:
             raise Exception(
                 'Error converting to epsg:%d coordinate system' % (epsg))
