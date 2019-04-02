@@ -2,6 +2,29 @@
 ## Introduction
 It is used to convert vector files like Shp, KML, GeoJson to one another.
 
+## How to RUN
+```
+import geoconvert as geoc
+data = geoc.vector()
+
+# Loading data
+data.path_input = 'Building.shp'
+data.config()
+
+# Converting data
+data.towgs(path_towgs='export/Building.shp')
+data.tokml(path_tokml='export/Building.kml')
+data.togeojson(path_togeojson='export/Building.json')
+
+```
+## Limitations
+It cannot work with multi class dataset. For example - If a KML have both point and line, then conversion will fail.
+
+## RoadMap
+- [ ] Multiclass dataset support
+- [ ] Raster conversion support
+
+
 ## Class
 1. Vector
 
