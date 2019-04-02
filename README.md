@@ -29,20 +29,20 @@ It cannot work with multi class dataset. For example - If a KML have both point 
 1. Vector
 
     ### Methods
-    1. vector.towgs(path_towgs)
+    1. ```vector.towgs(path_towgs)```
     
         Saves vector of any coordinate system to WGS coordinates on the given path
         
         [Default] - 'Filename_wgs.format'
 
-    2. vector.tokml(path_tokml)
+    2. ```vector.tokml(path_tokml)```
 
         Saves vector files to KML format. KML is always stored as WGS 84 Geographic coordinate system.
         
         [Default] 
         1. path_tokml = 'Filename.kml'
 
-    3. vector.toshp(epsg, path_toshp)
+    3. ```vector.toshp(epsg, path_toshp)```
 
 
         Saves vector files to shp format in the provided epsg code to given path.
@@ -51,7 +51,7 @@ It cannot work with multi class dataset. For example - If a KML have both point 
         1. path_toshp = 'Filename.shp'
         2. epsg = 4326
 
-    4. vector.togeojson(epsg, path_togeojson)
+    4. ```vector.togeojson(epsg, path_togeojson)```
 
         Saves vector files to KML format. KML is always stored as WGS 84 Geographic coordinate system.
         
