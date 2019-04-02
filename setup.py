@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='geoconvert',
-    version='0.1.0',
+    version='0.1.1',
     author='Manish Sahu',
     author_email='manish@indshine.com',
     url="https://gitlab.com/manish.indshine/geoconvert.git",
