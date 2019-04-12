@@ -19,9 +19,10 @@ data.togeojson(path_togeojson='export/Building.json')
 ```
 ## Limitations
 It cannot work with multi class dataset. For example - If a KML have both point and line, then conversion will fail.
+[Resolved in 0.2.0]
 
 ## RoadMap
-- [ ] Multiclass dataset support
+- [x] Multiclass dataset support (0.2.0)
 - [ ] Raster conversion support
 
 
