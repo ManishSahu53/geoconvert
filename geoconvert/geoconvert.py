@@ -106,6 +106,77 @@ class vector():
         except Exception as e:
             raise Exception('Error saving data to disk')
 
+    # Creating dxfs from datafram and saving it
+    def creatingdxf(self, dxf, dataframe, path_dxf):
+        world_point, world_line, world_polygon = self.split_geometry(dataframe)
+
+        if len(world_point) > 0:
+            dxf.layers.append(sdxf.Layer(
+                name="PointLayer", color=1))
+            dxf.layers.append(sdxf.Layer(
+                name="PointNameLayer", color=7))
+            # Extracting points data
+            for i in range(len(world_point)):
+                location = (
+                    list(world_point.geometry)[i].x, list(world_point.geometry)[i].y)
+                # Saving text layer
+                dxf.append(
+                    sdxf.Text(str(list(world_point.Name)[i]), point=location, layer="PointNameLayer"))
+
+                # Saving to point layer
+                dxf.append(sdxf.Point(
+                    points=location, layer="PointLayer"))
+
+        if len(world_line) > 0:
+            dxf.layers.append(sdxf.Layer(
+                name="LineLayer", color=1))
+            dxf.layers.append(sdxf.Layer(
+                name="LineNameLayer", color=7))
+            # Extracting points data
+            for i in range(len(world_line)):
+                centroid_location = (list(world_line.geometry)[i].centroid.x, list(
+                    world_line.geometry)[i].centroid.y)
+
+                line_location = list(world_line.geometry)[i].xy
+                location = []
+                for j in range(len(line_location[0])):
+                    location.append(
+                        (line_location[0][j], line_location[1][j]))
+
+                # Creating text layer at centroid of line
+                dxf.append(sdxf.Text(str(list(world_line.Name)[i]), point=
+                    centroid_location, layer="LineNameLayer"))
+
+                # Creating line layer
+                dxf.append(sdxf.LwPolyLine(
+                    points=location, layer="LineLayer", flag=1))
+
+        if len(world_polygon) > 0:
+            dxf.layers.append(sdxf.Layer(
+                name="PolygonLayer", color=1))
+            dxf.layers.append(sdxf.Layer(
+                name="PolygonNameLayer", color=7))
+            # Extracting points data
+            for i in range(len(world_polygon)):
+                centroid_location = (list(world_polygon.geometry)[i].centroid.x, list(
+                    world_polygon.geometry)[i].centroid.y)
+                line_location = list(world_polygon.geometry)[i].xy
+                location = []
+                for j in range(len(line_location[0])):
+                    location.append(
+                        (line_location[0][j], line_location[1][j]))
+
+                # Creating text layer at centroid of line
+                dxf.append(sdxf.Text(str(list(world_polygon.Name)[i]), point=
+                    centroid_location, layer="PolygonNameLayer"))
+
+                # Creating line layer
+                dxf.append(sdxf.LwPolyLine(
+                    points=location, layer="PolygonLayer", flag=1))
+
+         # Saving to file
+        dxf.saveas(path_dxf)
+
     def towgs(self, path_towgs=None):
         """
         Converts data to WGS coordinate system
@@ -144,7 +215,7 @@ class vector():
         else:
             world_point, world_line, world_polygon = self.split_geometry(world)
             print('Extracted %d points, %d lines, %d polygons' %
-              (len(world_point), len(world_line), len(world_polygon)))
+                  (len(world_point), len(world_line), len(world_polygon)))
             try:
                 if path_towgs is not None:
                     path_towgs_point = os.path.splitext(
@@ -155,12 +226,13 @@ class vector():
                         path_towgs)[0] + '_polygon' + os.path.splitext(path_towgs)[1]
 
                     # Saving to point, line, polygon
-                    if len(world_point)>0:
+                    if len(world_point) > 0:
                         world_point.to_file(path_towgs_point, driver=driver)
-                    if len(world_line)>0:
+                    if len(world_line) > 0:
                         world_line.to_file(path_towgs_line, driver=driver)
-                    if len(world_polygon)>0:
-                        world_polygon.to_file(path_towgs_polygon, driver=driver)
+                    if len(world_polygon) > 0:
+                        world_polygon.to_file(
+                            path_towgs_polygon, driver=driver)
 
                 else:
                     path_towgs_point = os.path.splitext(self.path_input)[
@@ -171,12 +243,13 @@ class vector():
                         self.path_input)[0] + '_wgs_polygon.' + self.extention
 
                     # Saving to point, line, polygon
-                    if len(world_point)>0:
+                    if len(world_point) > 0:
                         world_point.to_file(path_towgs_point, driver=driver)
-                    if len(world_line)>0:
+                    if len(world_line) > 0:
                         world_line.to_file(path_towgs_line, driver=driver)
-                    if len(world_polygon)>0:
-                        world_polygon.to_file(path_towgs_polygon, driver=driver)
+                    if len(world_polygon) > 0:
+                        world_polygon.to_file(
+                            path_towgs_polygon, driver=driver)
 
             except Exception as e:
                 raise Exception('Error saving data to WGS')
@@ -253,26 +326,26 @@ class vector():
         else:
             path_togeojson = os.path.splitext(self.path_input)[0] + '.geojson'
             self.splitandsave(
-                world = world, path = path_togeojson, driver = driver)
+                world=world, path=path_togeojson, driver=driver)
             print('Successfully converted : %s' % (path_togeojson))
 
-    def toshp(self, epsg = 4326, path_toshp = None):
+    def toshp(self, epsg=4326, path_toshp=None):
         """
         Converts data to shp format
         """
         print('converting to shp')
-        driver='ESRI Shapefile'
+        driver = 'ESRI Shapefile'
 
         # Converting to coordinate system
         try:
-            world=self.df.to_crs({'init': 'epsg:%s' % (epsg)})
+            world = self.df.to_crs({'init': 'epsg:%s' % (epsg)})
         except Exception as e:
             raise Exception('Error converting to epsg:%s' % (epsg))
 
         # Converting polygon to multipolygons
         print('poly to multi poly')
         try:
-            world["geometry"]=[MultiPolygon([feature]) if type(
+            world["geometry"] = [MultiPolygon([feature]) if type(
                 feature) == Polygon else feature for feature in world["geometry"]]
         except Exception as e:
             raise Exception('Error: Converting polygon to multipolygon')
@@ -281,22 +354,120 @@ class vector():
         if self.ismultigeometry == False:
             try:
                 if path_toshp is not None:
-                    world.to_file(path_toshp, driver = driver)
+                    world.to_file(path_toshp, driver=driver)
                 else:
-                    path_toshp=os.path.splitext(self.path_input)[0] + '.shp'
-                    world.to_file(path_toshp, driver = driver)
+                    path_toshp = os.path.splitext(self.path_input)[0] + '.shp'
+                    world.to_file(path_toshp, driver=driver)
             except Exception as e:
                 raise Exception('Error saving data to SHP')
             print('Successfully converted : %s' % (path_toshp))
         else:
-            path_toshp=os.path.splitext(self.path_input)[0] + '.shp'
+            path_toshp = os.path.splitext(self.path_input)[0] + '.shp'
             self.splitandsave(
-                world = world, path = path_toshp, driver = driver)
+                world=world, path=path_toshp, driver=driver)
             print('Successfully converted : %s' % (path_toshp))
 
+    # def todxf(self, path_todxf=None):
+    #     """
+    #     Converts data to dxf format
+    #     """
+    #     print('converting to dxf')
+
+    #     # Creating dxf dataset
+    #     dxf = sdxf.Drawing()
+    #     world = self.df
+        
+    #     # Converting polygon to multipolygons
+    #     try:
+    #         world["geometry"] = [MultiPolygon([feature]) if type(
+    #             feature) == Polygon else feature for feature in world["geometry"]]
+    #     except Exception as e:
+    #         raise Exception('Erro transforming polygon to multipolygon')
+
+    #     # Saving data to disk
+    #     if self.ismultigeometry == False:
+    #         try:
+    #             if path_todxf is not None:
+    #                 try:
+    #                     self.creatingdxf(dxf=dxf, dataframe=world,
+    #                                     path_dxf=path_todxf)
+    #                 except Exception as e:
+    #                     raise Exception('Error: Unable to convert dataframe to dxf')
+
+    #             else:
+    #                 path_todxf = os.path.splitext(self.path_input)[0] + '.dxf'
+    #                 try:
+    #                     self.creatingdxf(dxf=dxf, dataframe=world,
+    #                                     path_dxf=path_todxf)
+    #                 except Exception as e:
+    #                     raise Exception('Error: Unable to convert dataframe to dxf')
+
+    #         except Exception as e:
+    #             raise Exception('Error saving data to DXF')
+    #         print('Successfully converted : %s' % (path_todxf))
+
+    #     else:
+    #         path_todxf = os.path.splitext(self.path_input)[0] + '.dxf'
+    #         try:
+    #             self.creatingdxf(dxf=dxf, dataframe=world,
+    #                             path_dxf=path_todxf)
+    #         except Exception as e:
+    #             raise Exception('Error: Unable to convert dataframe to dxf')
+
+    #         print('Successfully converted : %s' % (path_todxf))
+
+    def todxf(self, epsg=None, path_todxf=None):
+        """
+        Converts data to shp format
+        """
+        print('converting to dxf')
+        driver = 'DXF'
+
+        # Converting to coordinate system
+        if epsg is not None:
+            try:
+                world = self.df.to_crs({'init': 'epsg:%s' % (epsg)})
+            except Exception as e:
+                raise Exception('Error converting to epsg:%s' % (epsg))
+        else:
+            world = self.df
+        
+        # Converting polygon to multipolygons
+        print('poly to multi poly')
+        try:
+            world["geometry"] = [MultiPolygon([feature]) if type(
+                feature) == Polygon else feature for feature in world["geometry"]]
+        except Exception as e:
+            raise Exception('Error: Converting polygon to multipolygon')
+
+        # Since dxf doesn't support attributes, we are removing all columns except gemerty
+        columns = list(world.columns)
+
+        for k in range(len(columns)):
+            if columns[k].upper()=='geometry'.upper():
+                continue
+            else:
+                del world[columns[k]]
+        
+        # Saving data to disk
+        if self.ismultigeometry == False:
+            try:
+                if path_todxf is not None:
+                    world.to_file(path_todxf, driver=driver)
+                else:
+                    path_todxf = os.path.splitext(self.path_input)[0] + '.dxf'
+                    world.to_file(path_todxf, driver=driver)
+            except Exception as e:
+                raise Exception('Error saving data to DXF')
+            print('Successfully converted : %s' % (path_todxf))
+        else:
+            path_todxf = os.path.splitext(self.path_input)[0] + '.dxf'
+            self.splitandsave(
+                world=world, path=path_todxf, driver=driver)
+            print('Successfully converted : %s' % (path_todxf))
 
 def __init__():
     # enable KML support which is disabled by default
-    fiona.drvsupport.supported_drivers['kml']='rw'
+    fiona.drvsupport.supported_drivers['kml'] = 'rw'
     # enable KML support which is disabled by default
-    fiona.drvsupport.supported_drivers['KML']='rw'
+    fiona.drvsupport.supported_drivers['KML'] = 'rw'

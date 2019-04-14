@@ -2,6 +2,10 @@
 ## Introduction
 It is used to convert vector files like Shp, KML, GeoJson to one another.
 
+## How to Install
+1. pip install geoconvert
+2. pip install geopanas, shapely, fiona
+
 ## How to RUN
 ```
 import geoconvert as geoc
@@ -54,8 +58,15 @@ It cannot work with multi class dataset. For example - If a KML have both point 
 
     4. ```vector.togeojson(epsg, path_togeojson)```
 
-        Saves vector files to KML format. KML is always stored as WGS 84 Geographic coordinate system.
+        Saves vector files to json format in the provided epsg code to given path.
         
         [Default] - 
         1. path_togeojson = 'Filename.json'
         2. epsg = 4326
+
+    5. ```vector.todxf(epsg, path_todxf)```
+        Saves vector file to dxf format. Coordinate system is default unless stated
+        
+        [Default] -
+        1. path_todxf = 'Filename.dxf'
+        2. epsg = Same as file
