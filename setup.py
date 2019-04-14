@@ -1,4 +1,9 @@
 from distutils.core import setup
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
 
 setup(
     name='geoconvert',
@@ -7,6 +12,7 @@ setup(
     author_email='manish@indshine.com',
     url="https://gitlab.com/manish.indshine/geoconvert.git",
     description="A small geospatial dataset converter package",
+    long_description=long_description,
     keywords=['geospatial', 'converter', 'vector'],
     classifiers=[
         "Programming Language :: Python :: 3",
