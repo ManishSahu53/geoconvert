@@ -16,10 +16,5 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: GIS',
     ],
-    requires=[
-        'shapely',
-        'geopandas',
-        'fiona'
-    ],
     packages=['geoconvert']
 )
