@@ -2,14 +2,10 @@ from distutils.core import setup
 
 setup(
     name='geoconvert',
-<<<<<<< HEAD
-    version='0.2.2',
-=======
-    version='0.3.0',
->>>>>>> feature-dxf
+    version='0.4.0',
     author='Manish Sahu',
     author_email='manish@indshine.com',
-    url="https://gitlab.com/manish.indshine/geoconvert.git",
+    url="https://github.com/ManishSahu53/geoconvert.git",
     description="A small geospatial dataset converter package",
     keywords=['geospatial', 'converter', 'vector'],
     classifiers=[

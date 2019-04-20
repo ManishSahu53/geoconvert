@@ -1,3 +1,4 @@
 0.1.0 - Convert SHP, KML, GeoJSON
 0.2.0 - Convert from multi geomteries also
-0.3.0 - dxf
+0.3.0 - Converstion to dxf support
+0.4.0 - Reprojecting raster and to IMG conversion
