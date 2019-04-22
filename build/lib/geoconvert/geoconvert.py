@@ -732,6 +732,50 @@ class raster():
         
         print('Successfully converted : %s' % (path_toimg))
 
+    def totif(self, epsg=None, path_totif=None):
+        #Open output format driver, see gdal_translate --formats for list
+        format = "GTiff"
+        driver = gdal.GetDriverByName( format )
+        print('Compression is %s'%(self.compression))
+
+        if driver is None:
+            raise Exception('Error: TIF file format is not supported')
+        
+        if path_totif is None:
+            path_totif = os.path.splitext(self.path_input)[0] + '.tif'
+        
+        if epsg is not None:
+            # Converting to different epsg code
+            dst_proj = 'EPSG:%s'%(str(epsg))
+            print('Reprojecting data to EPSG:%s'%(epsg))
+
+            try:
+                ds = gdal.Warp('', 
+                                self.path_input, 
+                                dstSRS=dst_proj,
+                                format='VRT')
+            except Exception as e:
+                raise Exception('Error: Unable to reproject dataset to %s'%(dst_proj))
+            
+            #Output to new format
+            try:
+                dst_ds = driver.CreateCopy(path_totif, ds, 0,
+                                            ['NUM_THREADS=ALL_CPUS',
+                                            'COMPRESS=%s' % (self.compression)] )
+            except Exception as e:
+                raise Exception('Error: Converting data to TIF')
+
+        else:
+            #Output to new format
+            try:
+                dst_ds = driver.CreateCopy(path_totif, self.ds, 0,
+                                            ['NUM_THREADS=ALL_CPUS',
+                                            'COMPRESS=%s' % (self.compression)] )
+            except Exception as e:
+                raise Exception('Error: Converting data to TIF')
+        
+        print('Successfully converted : %s' % (path_totif))
+
 
 def __init__():
     # enable KML support which is disabled by default
