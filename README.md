@@ -27,7 +27,9 @@ It cannot work with multi class dataset. For example - If a KML have both point 
 
 ## RoadMap
 - [x] Multiclass dataset support (0.2.0)
-- [ ] Raster conversion support
+- [x] Raster conversion support
+- [ ] jp2 conversion support
+- [ ] hdf conversion support
 
 
 ## Class

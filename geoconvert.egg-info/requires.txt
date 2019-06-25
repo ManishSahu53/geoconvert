@@ -1,0 +1,8 @@
+geopandas
+shapely
+fiona
+
+[dev]
+numpy
+argparse
+tqdm
